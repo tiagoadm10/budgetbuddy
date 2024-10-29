@@ -35,13 +35,12 @@ struct User: Codable, Identifiable {
 }
 
 struct Expense: Codable, Identifiable {
-    var id: UUID // Change from let to var for Codable
+    var id: UUID
     var amount: Double
     var category: Category
     var date: Date
     var note: String
     
-    // Add initializer
     init(id: UUID = UUID(), amount: Double, category: Category, date: Date, note: String) {
         self.id = id
         self.amount = amount
@@ -62,12 +61,11 @@ enum Category: String, Codable, CaseIterable {
 }
 
 struct Income: Codable, Identifiable {
-    var id: UUID // Change from let to var for Codable
+    var id: UUID
     var amount: Double
     var date: Date
     var note: String
     
-    // Add initializer
     init(id: UUID = UUID(), amount: Double, date: Date, note: String) {
         self.id = id
         self.amount = amount

@@ -29,35 +29,42 @@ struct AddExpenseView: View {
     var body: some View {
         NavigationView {
             Form {
-                HStack {
-                    Text(expenseManager.selectedCurrency.symbol)
-                    TextField("Amount", text: $amount)
-                        .keyboardType(.decimalPad)
-                }
-                
-                Picker("Category", selection: $category) {
-                    ForEach(Category.allCases, id: \.self) { category in
-                        Text(category.rawValue).tag(category)
+                Section {
+                    HStack {
+                        Text(expenseManager.selectedCurrency.symbol)
+                        TextField("Amount", text: $amount)
+                            .keyboardType(.decimalPad)
                     }
+                    
+                    Picker("Category", selection: $category) {
+                        ForEach(Category.allCases, id: \.self) { category in
+                            Text(category.rawValue).tag(category)
+                        }
+                    }
+                    
+                    TextField("Note", text: $note)
                 }
-                
-                TextField("Note", text: $note)
             }
             .navigationTitle("Add Expense")
             .navigationBarItems(
                 leading: Button("Cancel") { dismiss() },
                 trailing: Button("Save") {
-                    if let amount = Double(amount) {
-                        let expense = Expense(amount: amount,
-                                           category: category,
-                                           date: Date(),
-                                           note: note)
-                        expenseManager.addExpense(expense)
-                        dismiss()
-                    }
+                    saveExpense()
                 }
             )
         }
+    }
+    
+    private func saveExpense() {
+        guard let amountDouble = Double(amount), !note.isEmpty else { return }
+        
+        expenseManager.addExpense(
+            amount: amountDouble,
+            category: category,
+            note: note
+        )
+        
+        dismiss()
     }
 }
 
@@ -71,27 +78,48 @@ struct AddIncomeView: View {
     var body: some View {
         NavigationView {
             Form {
-                HStack {
-                    Text(expenseManager.selectedCurrency.symbol)
-                    TextField("Amount", text: $amount)
-                        .keyboardType(.decimalPad)
+                Section(header: Text("Income Details")) {
+                    HStack {
+                        Text(expenseManager.selectedCurrency.symbol)
+                        TextField("Amount", text: $amount)
+                            .keyboardType(.decimalPad)
+                    }
+                    
+                    TextField("Note", text: $note)
                 }
-                
-                TextField("Note", text: $note)
             }
             .navigationTitle("Add Income")
             .navigationBarItems(
                 leading: Button("Cancel") { dismiss() },
                 trailing: Button("Save") {
-                    if let amount = Double(amount) {
-                        let income = Income(amount: amount,
-                                         date: Date(),
-                                         note: note)
-                        expenseManager.addIncome(income)
-                        dismiss()
-                    }
+                    saveIncome()
                 }
             )
         }
     }
+    
+    private func saveIncome() {
+        guard let amountDouble = Double(amount), !note.isEmpty else { return }
+        
+        expenseManager.addIncome(
+            amount: amountDouble,
+            note: note
+        )
+        
+        dismiss()
+    }
 }
+
+#if DEBUG
+struct AddExpenseView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddExpenseView(expenseManager: ExpenseManager(userEmail: "test@test.com"))
+    }
+}
+
+struct AddIncomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddIncomeView(expenseManager: ExpenseManager(userEmail: "test@test.com"))
+    }
+}
+#endif
