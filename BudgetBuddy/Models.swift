@@ -34,19 +34,21 @@ struct User: Codable, Identifiable {
     }
 }
 
-struct Expense: Codable, Identifiable {
-    var id: UUID
-    var amount: Double
-    var category: Category
-    var date: Date
-    var note: String
+struct Expense: Identifiable, Codable {
+    let id: UUID
+    let amount: Double
+    let category: Category
+    let note: String
+    let date: Date
+    let currency: Currency
     
-    init(id: UUID = UUID(), amount: Double, category: Category, date: Date, note: String) {
+    init(id: UUID = UUID(), amount: Double, category: Category, note: String, date: Date, currency: Currency) {
         self.id = id
         self.amount = amount
         self.category = category
-        self.date = date
         self.note = note
+        self.date = date
+        self.currency = currency
     }
 }
 

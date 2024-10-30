@@ -36,6 +36,7 @@ class ExpenseManager: ObservableObject {
     @Published private(set) var expenses: [Expense] = []
     @Published private(set) var income: [Income] = []
     @Published var selectedCurrency: Currency = .usd
+    @Published var selectedDate = Date()
     
     private let userEmail: String
     
@@ -46,16 +47,17 @@ class ExpenseManager: ObservableObject {
     
     // MARK: - Expense Management
     func addExpense(amount: Double, category: Category, note: String) {
-        let expense = Expense(
-            id: UUID(),
-            amount: amount,
-            category: category,
-            date: Date(),
-            note: note
-        )
-        expenses.append(expense)
-        saveExpenses()
-    }
+            let expense = Expense(
+                amount: amount,
+                category: category,
+                note: note,
+                date: selectedDate, // This ensures we use the date selected in the DatePicker
+                currency: selectedCurrency
+            )
+            expenses.append(expense)
+            saveExpenses()
+        }
+    
     
     // MARK: - Income Management
     func addIncome(amount: Double, note: String) {

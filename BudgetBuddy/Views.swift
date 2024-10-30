@@ -212,6 +212,38 @@ struct ExpenseSummaryView: View {
     }
 }
 
+struct ExpenseRow: View {
+    let expense: Expense
+    let currency: Currency
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(expense.category.rawValue)
+                    .font(.headline)
+                Text(expense.note)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                Text(formatDate(expense.date))
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
+            Text("\(currency.symbol)\(expense.amount, specifier: "%.2f")")
+                .bold()
+        }
+        .padding(.vertical, 4)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        // Or use a custom format:
+        // formatter.dateFormat = "dd/MM/yyyy"
+        return formatter.string(from: date)
+    }
+}
+
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

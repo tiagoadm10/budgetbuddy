@@ -1,22 +1,5 @@
 import SwiftUI
 
-struct ExpenseRow: View {
-    let expense: Expense
-    let currency: Currency
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(expense.category.rawValue)
-                Text(expense.note)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
-            Spacer()
-            Text("\(currency.symbol)\(expense.amount, specifier: "%.2f")")
-        }
-    }
-}
 
 struct AddExpenseView: View {
     @Environment(\.dismiss) var dismiss
@@ -44,6 +27,11 @@ struct AddExpenseView: View {
                             Text(category.rawValue).tag(category)
                         }
                     }
+                    DatePicker("Date of Expense",
+                               selection: $expenseManager.selectedDate,
+                               displayedComponents: [.date])
+                        .datePickerStyle(.compact)
+                        .padding()
                     
                     TextField("Note", text: $note)
                 }
