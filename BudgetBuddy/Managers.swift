@@ -57,7 +57,7 @@ class ExpenseManager: ObservableObject {
             expenses.append(expense)
             saveExpenses()
         }
-    
+   
     
     // MARK: - Income Management
     func addIncome(amount: Double, note: String) {
@@ -193,6 +193,7 @@ class ExpenseManager: ObservableObject {
         }
     }
 }
+
 
 // MARK: - UserManager
 class UserManager: ObservableObject {

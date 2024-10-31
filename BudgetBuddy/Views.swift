@@ -68,7 +68,11 @@ struct ExpenseView: View {
                             .bold()
                     }
                 }
-                
+                Section(header: Text("Charts")) {
+                    let expensesByCategory = expenseManager.getExpensesByCategory(for: expenseManager.expenses)
+                    PieChartView(expenses: expensesByCategory)
+                        .frame(height: 300)
+                }
                 // Recent Expenses
                 Section(header: Text("Recent Expenses")) {
                     ForEach(expenseManager.expenses.prefix(5), id: \.id) { expense in
